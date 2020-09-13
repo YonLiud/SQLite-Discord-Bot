@@ -8,16 +8,11 @@ conn_connected = False
 conn = None
 
 
-# Database
+# ? Database
 
 database_file = r"database.db"
 
 def create_connection(db_file):
-    """ create a database connection to the SQLite database
-        specified by db_file
-    :param db_file: database file
-    :return: Connection object or None
-    """
     conn = None
     try:
         conn = sqlite3.connect(db_file)
@@ -28,32 +23,29 @@ def create_connection(db_file):
     return conn
 
 def create_table(conn, create_table_sql):
-    """ create a table from the create_table_sql statement
-    :param conn: Connection object
-    :param create_table_sql: a CREATE TABLE statement
-    :return:
-    """
     try:
         c = conn.cursor()
         c.execute(create_table_sql)
     except Error as e:
         print(e)
 
+def display_tables():
+    if conn:
+        c = conn.cursor()
+        c.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        tables = c.fetchall()
+        total_names = ""
+        for table_name in tables:
+            table_name = table_name[0]
+            total_names += table_name + " "
+        print(total_names)
+        return total_names
+
 def close_conn():
     global conn_connected
     conn_connected = False
-    if conn:
-        conn.close()
-
-def display_tables():
-    c = conn.cursor()
-    c.execute("SELECT name FROM sqlite_master WHERE type='table';")
-    tables = c.fetchall()
-    total_names = ""
-    for table_name in tables:
-        table_name = table_name[0]
-        total_names += table_name + " "
-    return total_names
+    conn.close()
+        
 
 
 
@@ -74,10 +66,9 @@ def main():
                                     project_id integer NOT NULL,
                                     begin_date text NOT NULL,
                                     end_date text NOT NULL,
-                                    FOREIGN KEY (project_id) REFERENCES projects (id)
                                 );"""
 
-    # create a database connection
+    # create a database connection*
     conn = create_connection(database_file)
 
     # create tables
@@ -92,7 +83,7 @@ def main():
 
 
 
-# Discord Bot
+# ? Discord Bot
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
@@ -103,7 +94,8 @@ start_con_message = discord.Embed(title=titleM,description='Starting connection 
 close_con_message = discord.Embed(title=titleM,description='Closing Connection to Database')
 already_open_con_message = discord.Embed(title=titleM,description='Connection already active')
 already_closed_con_message = discord.Embed(title=titleM,description='Connection already closed')
-table_list_message = discord.Embed(title=titleM + " Table List", description=display_tables())
+list_table_message = discord.Embed(title=titleM, description=display_tables())
+list_missing_message = discord.Embed(title=titleM, description="List request was not specified")
 
 @client.event
 async def on_message(message):
@@ -125,6 +117,13 @@ async def on_message(message):
             await message.channel.send(embed=close_con_message)
         else:
             await message.channel.send(embed=already_closed_con_message)
-    if message.content.startswith('>list tables'):
-        await message.channel.send(embed=table_list_message)
+
+    if message.content.startswith('>list'):
+        try:
+            if message.content.split()[1] == 'tables':
+                await message.channel.send(embed=list_table_message)
+            elif message.content.split()[1] == 'names':
+                await message.channel.send('oy vey')
+        except:
+                await message.channel.send(embed=list_missing_message)
 client.run(token)
