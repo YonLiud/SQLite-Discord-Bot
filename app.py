@@ -65,7 +65,7 @@ def main():
                                     status_id integer NOT NULL,
                                     project_id integer NOT NULL,
                                     begin_date text NOT NULL,
-                                    end_date text NOT NULL,
+                                    end_date text NOT NULL
                                 );"""
 
     # create a database connection*
@@ -122,8 +122,6 @@ async def on_message(message):
         try:
             if message.content.split()[1] == 'tables':
                 await message.channel.send(embed=list_table_message)
-            elif message.content.split()[1] == 'names':
-                await message.channel.send('oy vey')
         except:
                 await message.channel.send(embed=list_missing_message)
 client.run(token)
