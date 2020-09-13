@@ -40,14 +40,24 @@ def create_table(conn, create_table_sql):
         print(e)
 
 def close_conn():
+    global conn_connected
     conn_connected = False
     if conn:
         conn.close()
-    print("closed conn")
+
+def display_tables():
+    c = conn.cursor()
+    c.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    tables = c.fetchall()
+    total_names = ""
+    for table_name in tables:
+        table_name = table_name[0]
+        total_names += table_name + " "
+    return total_names
+
 
 
 def main():
-    print("accessed main")
 
     sql_create_projects_table = """ CREATE TABLE IF NOT EXISTS projects (
                                         id integer PRIMARY KEY,
@@ -87,10 +97,14 @@ def main():
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
 
-start_con_message = discord.Embed(title='Prompt',description='Starting connection to Database')
-close_con_message = discord.Embed(title='Prompt',description='Closing Connection to Database')
-already_open_con_message = discord.Embed(title='Prompt',description='Connection already active')
-already_closed_con_message = discord.Embed(title='Prompt',description='Connection already closed')
+titleM = 'SQLite Discord Shell'
+
+start_con_message = discord.Embed(title=titleM,description='Starting connection to Database')
+close_con_message = discord.Embed(title=titleM,description='Closing Connection to Database')
+already_open_con_message = discord.Embed(title=titleM,description='Connection already active')
+already_closed_con_message = discord.Embed(title=titleM,description='Connection already closed')
+table_list_message = discord.Embed(title=titleM + " Table List", description=display_tables())
+
 @client.event
 async def on_message(message):
     global conn_connected
@@ -111,5 +125,6 @@ async def on_message(message):
             await message.channel.send(embed=close_con_message)
         else:
             await message.channel.send(embed=already_closed_con_message)
-
+    if message.content.startswith('>list tables'):
+        await message.channel.send(embed=table_list_message)
 client.run(token)
