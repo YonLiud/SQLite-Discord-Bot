@@ -2,8 +2,11 @@ import sqlite3
 from sqlite3 import Error
 import discord
 
+token = open("token.txt", "r").read()
 client = discord.Client()
 conn_connected = False
+conn = None
+
 
 # Database
 
@@ -36,8 +39,15 @@ def create_table(conn, create_table_sql):
     except Error as e:
         print(e)
 
+def close_conn():
+    conn_connected = False
+    if conn:
+        conn.close()
+    print("closed conn")
+
+
 def main():
-    database = r"C:\sqlite\db\pythonsqlite.db"
+    print("accessed main")
 
     sql_create_projects_table = """ CREATE TABLE IF NOT EXISTS projects (
                                         id integer PRIMARY KEY,
@@ -75,23 +85,31 @@ def main():
 # Discord Bot
 @client.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(client) + ' Status: ' + str(conn_connected))
-    main()
+    print('We have logged in as {0.user}'.format(client))
 
-welcome_message = discord.Embed(title='Prompt',description='Activated')
-goodbye_message = discord.Embed(title='Prompt',description='Deactivated')
+start_con_message = discord.Embed(title='Prompt',description='Starting connection to Database')
+close_con_message = discord.Embed(title='Prompt',description='Closing Connection to Database')
+already_open_con_message = discord.Embed(title='Prompt',description='Connection already active')
+already_closed_con_message = discord.Embed(title='Prompt',description='Connection already closed')
 @client.event
 async def on_message(message):
     global conn_connected
     if message.author == client.user:
         return
 
-    if message.content.startswith('>'):
+    if message.content.startswith('>db'):
         if (conn_connected==False):
-            await message.channel.send(embed=welcome_message)
+            main()
+            await message.channel.send(embed=start_con_message)
             conn_connected = True
         else:
-            await message.channel.send(embed=goodbye_message)
-            conn_connected = False
+            await message.channel.send(embed=already_open_con_message)
 
-client.run("NzU0NjIzNTQzNTI2MDMxNDgy.X13b8Q.rp0Yx-Iq8XHFZGyC_G3_nLAZ5K4")
+    if message.content.startswith('>quit'):
+        if (conn_connected==True):
+            close_conn()
+            await message.channel.send(embed=close_con_message)
+        else:
+            await message.channel.send(embed=already_closed_con_message)
+
+client.run(token)
