@@ -46,18 +46,19 @@ def main():
         print("Error! cannot create the database connection.")
 
 
-def select_student_by_ID(user, request):
+def execute_query(query):
     if conn is not None:
         output = ""
         c = conn.cursor()
-        query = ("SELECT "+ request +" FROM students WHERE id="+user)
         print(query)
         c.execute(query)
         info = c.fetchall()
+        conn.commit()
         for value in info:
             output += str(value) + " "
         return output
     return "err"
+
 
 def close_conn():
     global conn_connected
@@ -71,14 +72,8 @@ def close_conn():
 async def on_ready():
     print('logged in as {0.user}'.format(client))
 
-titleM = 'SQLite Discord Shell'
-
-start_con_message = discord.Embed(title=titleM,description='Starting connection to Database')
-close_con_message = discord.Embed(title=titleM,description='Closing Connection to Database')
-already_open_con_message = discord.Embed(title=titleM,description='Connection already active')
-already_closed_con_message = discord.Embed(title=titleM,description='Connection already closed')
-arg_missing_message_select = discord.Embed(title=titleM, description='an argument is missing ">select [Integer] [COLUMN]"')
-arg_missing_message_create_table = discord.Embed(title=titleM, description='an argument is missing ">create [name] []"')
+title = 'SQLite Discord Shell'
+arg_missing_message = discord.Embed(title=title, description='Arguments are missing')
 
 
 @client.event
@@ -91,21 +86,23 @@ async def on_message(message):
         try:
             args1 = message.content.split()[1]
         except:
-            await message.channel.send(embed=arg_missing_message_create_table)
+            await message.channel.send(embed=arg_missing_message)
             return
         if args1.isAlpha():
             pass
 
 
-    if message.content.startswith('>select'):
+    if message.content.startswith('>_'):
         try:
-            args1 = message.content.split()[1]
-            args2 = message.content.split()[2]
+            args1 = message.content.split()[1] 
         except:
-            await message.channel.send(embed=arg_missing_message_select)
+            await message.channel.send(embed=arg_missing_message)
             return
-        if args1.isnumeric():
-            await message.channel.send(embed=(discord.Embed(title=titleM, description=str(select_student_by_ID(args1, args2)))))
-            return
+        query = ""
+        for word in message.content.split():
+            query += word + " "
+        query = query.replace('>_', '')
+        print("query = " + query)
+        await message.channel.send(embed=(discord.Embed(title=title, description=str(execute_query(query)))))
 
 client.run(token)
