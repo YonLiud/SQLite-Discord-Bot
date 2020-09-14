@@ -48,13 +48,15 @@ def main():
 
 def select_student_by_ID(user, request):
     if conn is not None:
+        output = ""
         c = conn.cursor()
         query = ("SELECT "+ request +" FROM students WHERE id="+user)
         print(query)
         c.execute(query)
-        info = ""
-        print(c.fetchall())
-        return "placeholder"
+        info = c.fetchall()
+        for value in info:
+            output += str(value) + " "
+        return output
     return "err"
 
 def close_conn():
@@ -103,7 +105,7 @@ async def on_message(message):
             await message.channel.send(embed=arg_missing_message_select)
             return
         if args1.isnumeric():
-            await message.channel.send(embed=(discord.Embed(title=titleM, description=select_student_by_ID(args1, args2))))
+            await message.channel.send(embed=(discord.Embed(title=titleM, description=str(select_student_by_ID(args1, args2)))))
             return
 
 client.run(token)
