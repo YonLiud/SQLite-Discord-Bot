@@ -49,7 +49,10 @@ def execute_query(query):
         output = ""
         c = conn.cursor()
         print(query)
-        c.execute(query)
+        try:
+            c.execute(query)
+        except Exception as e:
+            return e
         info = c.fetchall()
         conn.commit()
         for value in info:
@@ -80,15 +83,14 @@ async def on_message(message):
 
 
     if message.content.startswith('>_'):
-        try:
-            args1 = message.content.split()[1] 
-        except:
-            return
         query = ""
         for word in message.content.split():
             query += word + " "
         query = query.replace('>_', '')
-        await message.channel.send(embed=discord.Embed(title=title + " Query Request", description=(""" Query Sent: """ + query), color=discord.Color.dark_orange()))
+        if(query == " "):
+            await message.channel.send(embed=arg_missing_message)
+            return
+        await message.channel.send(embed=discord.Embed(title=title + " Query Request", description=(""" Query Sent: """ + query), color=discord.Color.red()))
         await message.channel.send(embed=(discord.Embed(title=title + " Query Result", description=str(execute_query(query)), color=discord.Color.green())))
         # await message.channel.send(embed=arg_missing_message)
 
