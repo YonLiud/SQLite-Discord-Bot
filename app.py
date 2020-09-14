@@ -20,7 +20,6 @@ def create_connection(db_file):
 
 conn = create_connection(database_file)
 
-
 def create_table(conn, create_table_sql):
     try:
         c = conn.cursor()
@@ -29,7 +28,6 @@ def create_table(conn, create_table_sql):
         print(e)
 
 def main():
-
     sql_create_students_table = """CREATE TABLE IF NOT EXISTS students (
                                     id integer PRIMARY KEY,
                                     name text NOT NULL,
@@ -42,6 +40,7 @@ def main():
         create_table(conn, sql_create_students_table)
     else:
         print("Error! cannot create the database connection.")
+main()
 
 
 def execute_query(query):
