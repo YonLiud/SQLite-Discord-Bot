@@ -55,7 +55,7 @@ def execute_query(query):
         info = c.fetchall()
         conn.commit()
         for value in info:
-            output += str(value) + " "
+            output += str(value) + "\n"
         return output
     return "err"
         
