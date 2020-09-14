@@ -5,7 +5,6 @@ import discord
 token = open("token.txt", "r").read()
 client = discord.Client()
 conn_connected = False
-conn = None
 
 
 # ? Database
@@ -21,6 +20,9 @@ def create_connection(db_file):
 
     return conn
 
+conn = create_connection(database_file)
+
+
 def create_table(conn, create_table_sql):
     try:
         c = conn.cursor()
@@ -28,7 +30,7 @@ def create_table(conn, create_table_sql):
     except Error as e:
         print(e)
 
-def main(request = None, identifier = 0, column = ""):
+def main():
 
     sql_create_students_table = """CREATE TABLE IF NOT EXISTS students (
                                     id integer PRIMARY KEY,
@@ -37,29 +39,23 @@ def main(request = None, identifier = 0, column = ""):
                                     major text NOT NULL
                                 );"""
 
-    # create a database connection*
-    conn = create_connection(database_file)
     # create tables
     if conn is not None:
         create_table(conn, sql_create_students_table)
     else:
         print("Error! cannot create the database connection.")
 
-    if(request == "select_by_id"):
-        return select_student_by_ID(conn, identifier, column)
 
-
-def select_student_by_ID(conn, user, request):
-    try:
+def select_student_by_ID(user, request):
+    if conn is not None:
         c = conn.cursor()
-        query = ("SELECT * FROM students WHERE id=",user)
+        query = ("SELECT "+ request +" FROM students WHERE id="+user)
         print(query)
         c.execute(query)
         info = ""
         print(c.fetchall())
-        return info
-    except Exception as e:
-        print(e)
+        return "placeholder"
+    return "err"
 
 def close_conn():
     global conn_connected
@@ -79,7 +75,9 @@ start_con_message = discord.Embed(title=titleM,description='Starting connection 
 close_con_message = discord.Embed(title=titleM,description='Closing Connection to Database')
 already_open_con_message = discord.Embed(title=titleM,description='Connection already active')
 already_closed_con_message = discord.Embed(title=titleM,description='Connection already closed')
-arg_missing_message = discord.Embed(title=titleM, description='an argument is missing ">select [Integer] [COLUMN]"')
+arg_missing_message_select = discord.Embed(title=titleM, description='an argument is missing ">select [Integer] [COLUMN]"')
+arg_missing_message_create_table = discord.Embed(title=titleM, description='an argument is missing ">create [name] []"')
+
 
 @client.event
 async def on_message(message):
@@ -87,31 +85,25 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('>connect'):
-        if (conn_connected==False):
-            main()
-            await message.channel.send(embed=start_con_message)
-            conn_connected = True
-        else:
-            await message.channel.send(embed=already_open_con_message)
+    if message.content.startswith == ('>create'):
+        try:
+            args1 = message.content.split()[1]
+        except:
+            await message.channel.send(embed=arg_missing_message_create_table)
+            return
+        if args1.isAlpha():
+            pass
 
-    if message.content.startswith('>quit'):
-        if (conn_connected==True):
-            close_conn()
-            await message.channel.send(embed=close_con_message)
-        else:
-            await message.channel.send(embed=already_closed_con_message)
 
     if message.content.startswith('>select'):
         try:
             args1 = message.content.split()[1]
             args2 = message.content.split()[2]
         except:
-            await message.channel.send(embed=arg_missing_message)
+            await message.channel.send(embed=arg_missing_message_select)
             return
         if args1.isnumeric():
-            output = ""
-            print(main("select_by_ID", args1, args2))
-            await message.channel.send(embed=(discord.Embed(title=titleM, description="placeholder")))
+            await message.channel.send(embed=(discord.Embed(title=titleM, description=select_student_by_ID(args1, args2))))
+            return
 
 client.run(token)
