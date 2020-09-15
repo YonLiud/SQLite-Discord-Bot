@@ -60,6 +60,7 @@ async def on_ready():
 title = 'SQLite Discord Shell'
 arg_missing_message = discord.Embed(title=title, description='Arguments are missing')
 blue_color = discord.Color.blue()
+gray_color = discord.Color.light_gray()
 
 @client.event
 async def on_message(message):
@@ -85,6 +86,6 @@ async def on_message(message):
         if(query == " "):
             await message.channel.send(embed=arg_missing_message)
             return
-        await message.channel.send(embed=(discord.Embed(title=title + " Query Output:", description=str(execute_query(query)), color=blue_color)))
+        await message.channel.send(embed=(discord.Embed(title=title + " Query Output:", description=str(execute_query(query)), color=gray_color)))
 
 client.run(token)
