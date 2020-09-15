@@ -69,7 +69,6 @@ def execute_query(query):
 @client.event
 async def on_ready():
     print('logged in as {0.user}'.format(client))
-    client.CustomActivity(database_file, *, emoji=None)
 
 title = 'SQLite Discord Shell'
 arg_missing_message = discord.Embed(title=title, description='Arguments are missing')
