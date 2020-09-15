@@ -42,7 +42,7 @@ def execute_query(query):
             for value in info:
                 output += str(value) + "\n"
             if output=="":
-                return "No Output"
+                return "No Output / Empty"
             return output
         except Exception as e:
             return e
@@ -59,7 +59,7 @@ async def on_ready():
 
 title = 'SQLite Discord Shell'
 arg_missing_message = discord.Embed(title=title, description='Arguments are missing')
-
+blue_color = discord.Color.blue()
 
 @client.event
 async def on_message(message):
@@ -73,7 +73,7 @@ async def on_message(message):
          https://www.sqlite.org/doclist.html
          For support, visit alTab Developers:
          http://www.altab.dev/
-         """, color=discord.Color.blue())))
+         """, color=blue_color)))
         return
 
 
@@ -85,6 +85,6 @@ async def on_message(message):
         if(query == " "):
             await message.channel.send(embed=arg_missing_message)
             return
-        await message.channel.send(embed=(discord.Embed(title=title + " Query Output:", description=str(execute_query(query)), color=discord.Color.green())))
+        await message.channel.send(embed=(discord.Embed(title=title + " Query Output:", description=str(execute_query(query)), color=blue_color)))
 
 client.run(token)
