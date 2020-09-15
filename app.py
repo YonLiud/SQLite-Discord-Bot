@@ -90,7 +90,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('sql>'):
+    if message.content.startswith('sql '):
         for role in message.author.roles:
             if role.name == "dmb":
                 break
@@ -98,7 +98,7 @@ async def on_message(message):
             await message.channel.send(embed=(discord.Embed(title=title, description="""You are not allowed to use Database Manager Bot without a role called "dmb" """, color=red_color)))
             return
 
-    if message.content == ('sql>help'):
+    if message.content == ('sql help'):
         await message.channel.send(embed=(discord.Embed(title=title, description="""For More Help, visit SQLite's website:
          https://www.sqlite.org/doclist.html
          For support, visit alTab Developers:
@@ -106,11 +106,11 @@ async def on_message(message):
          """, color=blue_color)))
         return
 
-    if message.content.startswith('sql>'):
+    if message.content.startswith('sql '):
         query = ""
         for word in message.content.split():
             query += word + " "
-        query = query.replace('sql>', '')
+        query = query.replace('sql ', '')
         if(query == " "):
             await message.channel.send(embed=arg_missing_message)
             return
