@@ -45,26 +45,31 @@ main()
 
 def execute_query(query):
     if conn is not None:
-        output = ""
-        c = conn.cursor()
-        print(query)
-        try:
-            c.execute(query)
+        try:            
+            output = ""
+            c = conn.cursor()
+            try:
+                c.execute(query)
+            except Exception as e:
+                return e
+            info = c.fetchall()
+            conn.commit()
+            for value in info:
+                output += str(value) + "\n"
+            return output
         except Exception as e:
             return e
-        info = c.fetchall()
-        conn.commit()
-        for value in info:
-            output += str(value) + "\n"
-        return output
-    return "err"
+    return "Error! the database connection was not created."
         
 
 
 # ? Discord Bot
+
+
 @client.event
 async def on_ready():
     print('logged in as {0.user}'.format(client))
+    client.CustomActivity(database_file, *, emoji=None)
 
 title = 'SQLite Discord Shell'
 arg_missing_message = discord.Embed(title=title, description='Arguments are missing')
@@ -75,9 +80,12 @@ async def on_message(message):
     if message.author == client.user:
         return
 
+    
+
     if message.content == ('>_help'):
-        await message.channel.send(embed=(discord.Embed(title=title, description="""For More Help, visit SQLite's website 
-         https://www.sqlite.org/doclist.html""", color=discord.Color.blue())))
+        await message.channel.send(embed=(discord.Embed(title=title, description="""For More Help, visit SQLite's website:
+         https://www.sqlite.org/doclist.html
+         """, color=discord.Color.blue())))
         return
 
 
@@ -89,8 +97,8 @@ async def on_message(message):
         if(query == " "):
             await message.channel.send(embed=arg_missing_message)
             return
-        await message.channel.send(embed=discord.Embed(title=title + " Query Request", description=(""" Query Sent: """ + query), color=discord.Color.red()))
-        await message.channel.send(embed=(discord.Embed(title=title + " Query Result", description=str(execute_query(query)), color=discord.Color.green())))
+        await message.channel.send(embed=discord.Embed(title=title + " Query Input:", description=(""" Query Sent: """ + query), color=discord.Color.red()))
+        await message.channel.send(embed=(discord.Embed(title=title + " Query Output:", description=str(execute_query(query)), color=discord.Color.green())))
         # await message.channel.send(embed=arg_missing_message)
 
 client.run(token)
