@@ -90,14 +90,15 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    for role in message.author.roles:
-        if (role.name.lower() == "dmb".lower()):
-            break
-    else:
-        await message.channel.send(embed=(discord.Embed(title=title, description="""You are not allowed to use Database Manager Bot without a role called "dmb" """, color=red_color)))
-        return
+    if message.content.startswith('dmb_'):
+        for role in message.author.roles:
+            if role.name == "dmb":
+                break
+        else:
+            await message.channel.send(embed=(discord.Embed(title=title, description="""You are not allowed to use Database Manager Bot without a role called "dmb" """, color=red_color)))
+            return
 
-    if message.content == ('sql>help'):
+    if message.content == ('dmb_help'):
         await message.channel.send(embed=(discord.Embed(title=title, description="""For More Help, visit SQLite's website:
          https://www.sqlite.org/doclist.html
          For support, visit alTab Developers:
@@ -105,11 +106,11 @@ async def on_message(message):
          """, color=blue_color)))
         return
 
-    if message.content.startswith('sql>'):
+    if message.content.startswith('dmb_'):
         query = ""
         for word in message.content.split():
             query += word + " "
-        query = query.replace('sql>', '')
+        query = query.replace('dmb_', '')
         if(query == " "):
             await message.channel.send(embed=arg_missing_message)
             return
