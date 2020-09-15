@@ -52,24 +52,52 @@ def execute_query(query):
 
 # ? Discord Bot
 
-
 @client.event
 async def on_ready():
     print('logged in as {0.user}'.format(client))
+    guilds = client.guilds
+    for guild in guilds:
+        for role in guild.roles:
+            if role.name.lower() == "dmb".lower():
+                break
+        else:
+            await guild.create_role(name="dmb")
+
+@client.event
+async def on_guild_join(guild):
+    for role in guild.roles:
+        if role.name.lower() == "dmb".lower():
+            break
+    else:
+           await guild.create_role(name="dmb")
+      
+    
+
+
 
 title = 'SQLite Discord Shell'
 arg_missing_message = discord.Embed(title=title, description='Arguments are missing')
 blue_color = discord.Color.blue()
 gray_color = discord.Color.light_gray()
+red_color = discord.Color.red()
 
 @client.event
 async def on_message(message):
+
+
+
+
     if message.author == client.user:
         return
 
-    #TODO  >>> ADD PERMISSIONS HERE <<<
+    for role in message.author.roles:
+        if (role.name.lower() == "dmb".lower()):
+            break
+    else:
+        await message.channel.send(embed=(discord.Embed(title=title, description="""You are not allowed to use Database Manager Bot without a role called "dmb" """, color=red_color)))
+        return
 
-    if message.content == ('>_help'):
+    if message.content == ('sql>help'):
         await message.channel.send(embed=(discord.Embed(title=title, description="""For More Help, visit SQLite's website:
          https://www.sqlite.org/doclist.html
          For support, visit alTab Developers:
@@ -77,12 +105,11 @@ async def on_message(message):
          """, color=blue_color)))
         return
 
-
-    if message.content.startswith('>_'):
+    if message.content.startswith('sql>'):
         query = ""
         for word in message.content.split():
             query += word + " "
-        query = query.replace('>_', '')
+        query = query.replace('sql>', '')
         if(query == " "):
             await message.channel.send(embed=arg_missing_message)
             return
