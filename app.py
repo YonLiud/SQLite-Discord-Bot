@@ -99,7 +99,9 @@ async def on_message(message):
             return
 
     if message.content == ('sql>help'):
-        await message.channel.send(embed=(discord.Embed(title=title, description="""For More Help, visit SQLite's website:
+        await message.channel.send(embed=(discord.Embed(title=title, description=""" For Initialization Help, please read project's readme.md:
+         https://github.com/YonLiud/Discord-Database-Bot/blob/master/README.md
+         For More Help, visit SQLite's website:
          https://www.sqlite.org/doclist.html
          For support, visit alTab Developers:
          http://www.altab.dev/
