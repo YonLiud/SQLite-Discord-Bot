@@ -1,8 +1,8 @@
-# Discord Database Bot
+# SQLite Discord Bot
 
 
 
-Discord Database Bot is a discord bot, able to connect and manage any SQLite Database.
+SQLite Discord Bot is a discord bot, able to connect and manage any SQLite Database.
   - No Premium
   - Access to SQLite .db file
   - Full SQLite shell access
@@ -10,23 +10,23 @@ Discord Database Bot is a discord bot, able to connect and manage any SQLite Dat
 ![](https://discordpy.readthedocs.io/en/latest/_images/snake.png)
 
 ## About
-Discord Database Bot is a lightweight python based bot that's built by [Yon Liud](https://github.com/YonLiud) for easier access to SQLite Shell, without the hassle of remote accessing.
+SQLite Discord Bot is a lightweight python based bot that's built by [Yon Liud](https://github.com/YonLiud) for easier access to SQLite Shell, without the hassle of remote accessing.
 A simple setup is required for running the bot,
 
 # ![#1589F0](https://via.placeholder.com/15/1589F0/000000?text=+) Setup
-Discord Database Bot uses a small number of python modules to work properly:
+SQLite Discord Bot uses a small number of python modules to work properly:
 
 * [Valid Token](https://discordpy.readthedocs.io/en/latest/discord.html) - A Valid discord bot
 * [Python](https://www.python.org/) - Python, duh
 * [Discord.py](https://pypi.org/project/discord.py/) - Discord Module
 * [SQLite3](https://www.sqlite.org/index.html) - The Database Library
 
-And of course Discord Database Bot itself is open source with a [public repository](https://github.com/YonLiud/Discord-Database-Bot/) 
+And of course SQLite Discord Bot itself is open source with a [public repository](https://github.com/YonLiud/Discord-Database-Bot/) 
 on GitHub.
 
 # ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) Installation
 
-Discord Database Bot requires [Python3](https://www.python.org/) & [Discord.py](https://pypi.org/project/discord.py/) to run.
+SQLite Discord Bot requires [Python3](https://www.python.org/) & [Discord.py](https://pypi.org/project/discord.py/) to run.
 
 #### Install the modules.
 
@@ -53,7 +53,7 @@ $ python3 app.py
 The bot will create a role called 'dmb'
 #### ![#00FF00](https://via.placeholder.com/15/00FF00/000000?text=+) In Server Use
 
-> For being able to execute any command by Discord Database Bot, you must assign users with the created 'dmb' role,
+> For being able to execute any command by SQLite Discord Bot, you must assign users with the created 'dmb' role,
 
 for help:
 ```sql
