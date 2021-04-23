@@ -2,7 +2,9 @@ import sqlite3
 from sqlite3 import Error
 import discord
 
-token = open("token.txt", "r").read()
+from dotenv import dotenv_values
+
+token = dotenv_values(".env")["TOKEN"]
 client = discord.Client()
 
 # ? Database

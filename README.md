@@ -32,17 +32,16 @@ SQLite Discord Bot requires [Python3](https://www.python.org/) & [Discord.py](ht
 
 ```sh
 $ cd Discord-Database-Bot
-$ pip install discord.py
+$ pip3 install -r requirements.txt
 ```
 #### Insert bot's token
 How to get a token: https://discordpy.readthedocs.io/en/latest/discord.html
-```sh
-$ cd Discord-Database-Bot
-$ echo "[TOKEN HERE]" > token.txt
+
+After recieving the token, open the `SQLite-Discord-Bot` Folder & replace your token into the ``.env`` file
+
+###Example of token inside the .env:
 ```
-#Example of token command:
-```cmd
-echo "NzU0NjIzNTQzNTI2MDMxNDgy.X13b8Q.e0V0cwwmc_BYeMHwvJovFQhLBfk" > token.txt
+TOKEN=NzU0NjIzNTQzNTI2MDMxNDgy.X13b8Q.e0V0cwwmc_BYeMHwvJovFQhLBfk
 ```
 (the token is no longer valid, **DO NOT ATTEMPT TO INSERT TOKEN TO PROJECT**)
 #### ![#c5f015](https://via.placeholder.com/15/FFFF00/000000?text=+) Running Bot
@@ -70,7 +69,7 @@ sql>help
 #### ![#FF69B4](https://via.placeholder.com/15/FF69B4/000000?text=+) Help
 
 for help, run the command ``sql>help``,
-for support, please visit [alTab Developments Website](https://altab.dev/), all of the needed information is there
+for support, please contact me at my [Discord!](https://discord.com/) ``y0nliud#1545``. Hopefully I will be able to assist you! 
 
 License
 ----
