@@ -60,11 +60,13 @@ sql>help
 ```
 
 #### ![#9400D3](https://via.placeholder.com/15/9400D3/000000?text=+) Basic Commands
-| Plugin | README |
+| Name | Syntax |
 | ------ | ------ |
-| Create Table | CREATE TABLE IF NOT EXISTS name (parameters)|
-| Select a Value from Table | SELECT column-name FROM table-name WHERE type='identifier' |
-| Insert a Value to row | INSERT INTO table-name (parameters) VALUES (values of parameters)  |
+| Create Table | ``sql>CREATE TABLE IF NOT EXISTS name (parameters)``|
+| Select a Value from Table | ``sql>SELECT column-name FROM table-name WHERE type='identifier'`` |
+| Insert a Value to row | ``sql>NSERT INTO table-name (parameters) VALUES (values of parameters)``  |
+###### If you require additional help with command, check out [this SQLite Cheat Sheet](https://d17h27t6h515a5.cloudfront.net/topher/2016/September/57ed880e_sql-sqlite-commands-cheat-sheet/sql-sqlite-commands-cheat-sheet.pdf)
+
 
 #### ![#FF69B4](https://via.placeholder.com/15/FF69B4/000000?text=+) Help
 

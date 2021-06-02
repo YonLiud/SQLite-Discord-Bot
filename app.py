@@ -105,8 +105,10 @@ async def on_message(message):
          https://github.com/YonLiud/Discord-Database-Bot/blob/master/README.md
          For More Help, visit SQLite's website:
          https://www.sqlite.org/doclist.html
-         For support, visit alTab Developers:
+         To check my project's cool Website, visit alTab Developers:
          http://www.altab.dev/
+         For More Commands, visit this great cheat sheet:
+         https://d17h27t6h515a5.cloudfront.net/topher/2016/September/57ed880e_sql-sqlite-commands-cheat-sheet/sql-sqlite-commands-cheat-sheet.pdf
          """, color=blue_color)))
         return
 
