@@ -39,7 +39,7 @@ How to get a token: https://discordpy.readthedocs.io/en/latest/discord.html
 
 After recieving the token, open the `SQLite-Discord-Bot` Folder & replace your token into the ``.env`` file
 
-###Example of token inside the .env:
+### Example of token inside the .env:
 ```
 TOKEN=NzU0NjIzNTQzNTI2MDMxNDgy.X13b8Q.e0V0cwwmc_BYeMHwvJovFQhLBfk
 ```
